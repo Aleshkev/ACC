@@ -1,0 +1,12 @@
+.vscode
+a.exe
+_build
+
+docs/.buildinfo
+docs/objects.inv
+docs/_static/*
+!docs/_static/alabaster.css
+!docs/_static/basic.css
+!docs/_static/katex-math.css
+!docs/_static/pygments.css
+!docs/_static/katex_autorender.js
