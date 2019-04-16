@@ -3,10 +3,6 @@ ACC
 ===
 
 
-.. math::
-
-   \frac{ \sum_{t=0}^{N}f(t,k) }{N}
-
 .. TODO: This shows three 'cyclical reference' warnings, but I can't get it to
    work any other way.
 .. toctree::
