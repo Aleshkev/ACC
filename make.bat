@@ -27,7 +27,9 @@ if errorlevel 9009 (
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%
 
+rmdir .\docs\ /S /Q
 xcopy .\_build\singlehtml .\docs\ /S /E /F /Y
+copy NUL .\docs\.nojekyll
 
 goto end
 

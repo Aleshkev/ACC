@@ -9,4 +9,4 @@ docs/_static/*
 !docs/_static/basic.css
 !docs/_static/katex-math.css
 !docs/_static/pygments.css
-!docs/_static/katex_autorender.js
+!docs/_static/katex_autorenderer.js
