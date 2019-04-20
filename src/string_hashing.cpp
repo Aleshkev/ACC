@@ -49,7 +49,7 @@ struct hash_model {
   }
   uint32_t sub(const vector<uint32_t> &v, uint32_t i, uint32_t j) {
     if (i == 0) return v[j];
-    return truncate(pow(uint64_t(truncate.guard), 2) + v[j] -
+    return truncate(uint64_t(truncate.guard) * truncate.guard + v[j] -
                     uint64_t(v[i - 1]) * power[j - i + 1]);
   }
   uint32_t scalar(const string &s) {
