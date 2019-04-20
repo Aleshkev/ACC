@@ -313,6 +313,110 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="hasze">
+<h2>Hasze<a class="headerlink" href="#hasze" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<p>Hasze używają functorów do modulo. Dzięki Kubinowi dostępne jest <a class="reference external" href="https://kubin.w.staszic.waw.pl/sheets/of-modulo.html">modulo przez liczby pierwsze Mersenne’a</a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span><span class="kt">uint32_t</span> <span class="n">prime</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Const</span> <span class="p">{</span>
+  <span class="kt">uint32_t</span> <span class="n">guard</span> <span class="o">=</span> <span class="n">prime</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="nf">operator</span><span class="p">()(</span><span class="kt">uint64_t</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">prime</span> <span class="o">?</span> <span class="n">x</span> <span class="o">%</span> <span class="nl">prime</span> <span class="p">:</span> <span class="n">x</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">Implicit</span> <span class="p">{</span>
+  <span class="kt">uint32_t</span> <span class="n">guard</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="nf">operator</span><span class="p">()(</span><span class="kt">uint64_t</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">uint32_t</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">31</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">Mersenne</span> <span class="p">{</span>
+  <span class="kt">uint32_t</span> <span class="n">guard</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">K</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="nf">operator</span><span class="p">()(</span><span class="kt">uint64_t</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="n">guard</span><span class="p">);</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span> <span class="o">&amp;</span> <span class="n">guard</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="n">guard</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">x</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// vec(string s, vector&lt;uint32_t&gt; &amp;v) – sprawia, że wektor v jest tablicą haszy.</span>
+<span class="c1">// sub(vector&lt;uint32_t&gt; v, i, j)      → hasz na [i, j] w tablicy haszy v.</span>
+<span class="c1">// scalar(string s)                   → hasz całego tekstu.</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">uint32_t</span> <span class="n">prime</span> <span class="o">=</span> <span class="mi">31</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Truncate</span> <span class="o">=</span> <span class="n">Mersenne</span><span class="o">&lt;&gt;&gt;</span>
+<span class="k">struct</span> <span class="n">hash_model</span> <span class="p">{</span>
+  <span class="n">Truncate</span> <span class="n">truncate</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="nf">encode</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">c</span> <span class="o">-</span> <span class="sc">&#39;a&#39;</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kt">uint32_t</span> <span class="n">max_n</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">power</span><span class="p">;</span>
+  <span class="n">hash_model</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">max_n</span><span class="p">)</span> <span class="o">:</span> <span class="n">max_n</span><span class="p">(</span><span class="n">max_n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">power</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">max_n</span><span class="p">);</span>
+    <span class="n">power</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+      <span class="n">power</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="kt">uint64_t</span><span class="p">(</span><span class="n">power</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">prime</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="kt">void</span> <span class="n">vec</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">v</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="k">return</span><span class="p">;</span>
+    <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+      <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="kt">uint64_t</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">prime</span> <span class="o">+</span> <span class="n">encode</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+  <span class="p">}</span>
+  <span class="kt">uint32_t</span> <span class="n">sub</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">i</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+    <span class="k">return</span> <span class="nf">truncate</span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="kt">uint64_t</span><span class="p">(</span><span class="n">truncate</span><span class="p">.</span><span class="n">guard</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span>
+                    <span class="kt">uint64_t</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">power</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]);</span>
+  <span class="p">}</span>
+  <span class="kt">uint32_t</span> <span class="n">scalar</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">uint64_t</span> <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="nl">c</span> <span class="p">:</span> <span class="n">s</span><span class="p">)</span> <span class="n">r</span> <span class="o">=</span> <span class="n">truncate</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">prime</span> <span class="o">+</span> <span class="n">encode</span><span class="p">(</span><span class="n">c</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Działa tak samo jak hash_model, ale przyjmowane i zwracane typy są parami.</span>
+<span class="k">typedef</span> <span class="n">pair</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&gt;</span> <span class="n">paired</span><span class="p">;</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">TruncateA</span> <span class="o">=</span> <span class="n">Implicit</span><span class="p">,</span> <span class="k">class</span> <span class="nc">TruncateB</span> <span class="o">=</span> <span class="n">Mersenne</span><span class="o">&lt;&gt;</span><span class="p">,</span>
+          <span class="kt">uint32_t</span> <span class="n">prime_a</span> <span class="o">=</span> <span class="mi">31</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">prime_b</span> <span class="o">=</span> <span class="mi">37</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="n">double_hash_model</span> <span class="p">{</span>
+  <span class="n">hash_model</span><span class="o">&lt;</span><span class="n">prime_a</span><span class="p">,</span> <span class="n">TruncateA</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">;</span>
+  <span class="n">hash_model</span><span class="o">&lt;</span><span class="n">prime_b</span><span class="p">,</span> <span class="n">TruncateB</span><span class="o">&gt;</span> <span class="n">b</span><span class="p">;</span>
+  <span class="n">double_hash_model</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">max_n</span><span class="p">)</span> <span class="o">:</span> <span class="n">a</span><span class="p">(</span><span class="n">max_n</span><span class="p">),</span> <span class="n">b</span><span class="p">(</span><span class="n">max_n</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="kt">void</span> <span class="n">vec</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">,</span> <span class="n">paired</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">a</span><span class="p">.</span><span class="n">vec</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">.</span><span class="n">first</span><span class="p">),</span> <span class="n">b</span><span class="p">.</span><span class="n">vec</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">pair</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="p">,</span> <span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">sub</span><span class="p">(</span><span class="k">const</span> <span class="n">paired</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">i</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">a</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">b</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">second</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)};</span>
+  <span class="p">}</span>
+  <span class="n">pair</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="p">,</span> <span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">scalar</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">a</span><span class="p">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">b</span><span class="p">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">s</span><span class="p">)};</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operacje-bitowe">
+<h2>Operacje bitowe<a class="headerlink" href="#operacje-bitowe" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<div class="section" id="przeciwne-znaki">
+<h3>Przeciwne znaki?<a class="headerlink" href="#przeciwne-znaki" title="Stały odnośnik do tego nagłówka">¶</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// → true iff sgn(x) ≠ sgn(y).</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">dsgn</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">,</span> <span class="n">T</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">^</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="nastepna-maska-bitowa">
+<h3>Następna maska bitowa<a class="headerlink" href="#nastepna-maska-bitowa" title="Stały odnośnik do tego nagłówka">¶</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// → następna leksykograficznie maska bitowa.</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="n">T</span> <span class="n">nxtp</span><span class="p">(</span><span class="n">T</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">auto</span> <span class="n">t</span> <span class="o">=</span> <span class="n">v</span> <span class="o">|</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(((</span><span class="o">~</span><span class="n">t</span> <span class="o">&amp;</span> <span class="o">-~</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">__builtin_ctz</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -351,6 +455,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#drzewo-potegowe">Drzewo Potęgowe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#hasze">Hasze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#operacje-bitowe">Operacje bitowe</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#przeciwne-znaki">Przeciwne znaki?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#nastepna-maska-bitowa">Następna maska bitowa</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

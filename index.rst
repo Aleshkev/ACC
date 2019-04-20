@@ -18,6 +18,7 @@ Przechodzenie grafu
 
 DFS, iteracyjnie
 ----------------
+
 .. literalinclude:: src/bfs_dfs.cpp
    :start-after: <dfs-iterative>
    :end-before: </dfs-iterative>
@@ -78,3 +79,33 @@ Także Fenwick Tree lub Binary Indexed Tree (BIT).
 .. literalinclude:: src/fenwick_tree.cpp
    :start-after: <fenwick-tree>
    :end-before: </fenwick-tree>
+
+
+Hasze
+=====
+
+Hasze używają functorów do modulo. Dzięki Kubinowi dostępne jest `modulo przez liczby pierwsze Mersenne'a <https://kubin.w.staszic.waw.pl/sheets/of-modulo.html>`_. 
+
+.. literalinclude:: src/string_hashing.cpp
+   :start-after: <mod-functors>
+   :end-before: </mod-functors>
+
+.. literalinclude:: src/string_hashing.cpp
+   :start-after: <hash-models>
+   :end-before: </hash-models>
+
+
+Operacje bitowe
+===============
+
+Przeciwne znaki?
+----------------
+.. literalinclude:: src/bit_operations.cpp
+   :start-after: <opposite-signs>
+   :end-before: </opposite-signs>
+
+Następna maska bitowa
+---------------------
+.. literalinclude:: src/bit_operations.cpp
+   :start-after: <next-permutation>
+   :end-before: </next-permutation>
