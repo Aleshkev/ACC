@@ -17,6 +17,11 @@ ostream &operator<<(ostream &o, const vector<T> &v) {
   o << "]";
   return o;
 }
+template <typename T, typename U>
+ostream &operator<<(ostream &o, const pair<T, U> &v) {
+  o << "(" << v.first << ", " << v.second << ")";
+  return o;
+}
 
 int main() {
   // ios_base::sync_with_stdio(false);
