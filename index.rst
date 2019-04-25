@@ -81,6 +81,14 @@ Także Fenwick Tree lub Binary Indexed Tree (BIT).
    :end-before: </fenwick-tree>
 
 
+Manacher
+========
+
+.. literalinclude:: src/manacher.cpp
+   :start-after: <manacher>
+   :end-before: </manacher>
+
+
 Hasze
 =====
 

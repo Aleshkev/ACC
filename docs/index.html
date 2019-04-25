@@ -318,6 +318,28 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="manacher">
+<h2>Manacher<a class="headerlink" href="#manacher" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// odd_palindromes(s)  → d, d[i] = max. dł. palindromu o środku w i.</span>
+<span class="c1">// even_palindromes(s) → d, d[i] = max. dł. palindromu o środku między i - 1, i.</span>
+<span class="c1">//   Zatem zawsze d[0] = 0.</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">int8_t</span> <span class="n">w</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span> <span class="n">manacher</span><span class="p">(</span><span class="n">T</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int32_t</span> <span class="n">n</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span> <span class="n">d</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">r</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">-</span> <span class="nl">w</span> <span class="p">:</span> <span class="n">min</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span> <span class="o">-</span> <span class="n">i</span> <span class="o">+</span> <span class="n">w</span><span class="p">],</span> <span class="n">r</span> <span class="o">-</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span> <span class="o">-</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span> <span class="o">-</span> <span class="n">w</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">])</span> <span class="o">++</span><span class="n">k</span><span class="p">;</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="o">--</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">)</span> <span class="n">l</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">k</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cp">#define odd_palindromes manacher&lt;0&gt;</span>
+<span class="cp">#define even_palindromes manacher&lt;1&gt;</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="hasze">
 <h2>Hasze<a class="headerlink" href="#hasze" title="Stały odnośnik do tego nagłówka">¶</a></h2>
 <p>Hasze używają functorów do modulo. Dzięki Kubinowi dostępne jest <a class="reference external" href="https://kubin.w.staszic.waw.pl/sheets/of-modulo.html">modulo przez liczby pierwsze Mersenne’a</a>.</p>
@@ -462,6 +484,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#drzewo-potegowe">Drzewo Potęgowe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#manacher">Manacher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#hasze">Hasze</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#operacje-bitowe">Operacje bitowe</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="index.html#przeciwne-znaki">Przeciwne znaki?</a></li>
