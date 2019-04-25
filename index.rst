@@ -117,3 +117,13 @@ Następna maska bitowa
 .. literalinclude:: src/bit_operations.cpp
    :start-after: <next-permutation>
    :end-before: </next-permutation>
+
+
+Szybkie IO
+==========
+
+
+.. literalinclude:: src/fast_io.cpp
+   :start-after: <fast-io>
+   :end-before: </fast-io>
+

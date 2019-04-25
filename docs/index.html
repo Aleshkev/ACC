@@ -446,6 +446,65 @@
 </div>
 </div>
 </div>
+<div class="section" id="szybkie-io">
+<h2>Szybkie IO<a class="headerlink" href="#szybkie-io" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifdef UNITEST</span>
+<span class="cp">#define g getchar</span>
+<span class="cp">#define p putchar</span>
+<span class="cp">#else</span>
+<span class="cp">#define g getchar_unlocked</span>
+<span class="cp">#define p putchar_unlocked</span>
+<span class="cp">#endif</span>
+<span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">iswhite</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span> <span class="o">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="k">struct</span> <span class="n">fast_io</span> <span class="p">{</span>
+  <span class="kt">char</span> <span class="n">eat_blank</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">g</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">iswhite</span><span class="p">(</span><span class="n">c</span><span class="p">))</span> <span class="n">c</span> <span class="o">=</span> <span class="n">g</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+  <span class="k">typename</span> <span class="n">enable_if</span><span class="o">&lt;</span><span class="n">is_integral</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span> <span class="n">fast_io</span><span class="o">&gt;::</span><span class="n">type</span> <span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">eat_blank</span><span class="p">();</span> <span class="o">!</span><span class="n">iswhite</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="n">c</span> <span class="o">=</span> <span class="n">g</span><span class="p">())</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">c</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">fast_io</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">eat_blank</span><span class="p">();</span> <span class="o">!</span><span class="n">iswhite</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="n">c</span> <span class="o">=</span> <span class="n">g</span><span class="p">())</span> <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">++</span><span class="p">)</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">fast_io</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">eat_blank</span><span class="p">();</span> <span class="o">!</span><span class="n">iswhite</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="n">c</span> <span class="o">=</span> <span class="n">g</span><span class="p">())</span> <span class="n">s</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">fast_io</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">p</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+  <span class="k">typename</span> <span class="n">enable_if</span><span class="o">&lt;</span><span class="n">is_integral</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">,</span> <span class="n">fast_io</span><span class="o">&gt;::</span><span class="n">type</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="n">p</span><span class="p">(</span><span class="sc">&#39;0&#39;</span><span class="p">);</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="kt">char</span> <span class="n">d</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+      <span class="kt">int32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">/=</span> <span class="mi">10</span><span class="p">)</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;0&#39;</span> <span class="o">+</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="o">--</span><span class="n">i</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="n">p</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">fast_io</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">s</span><span class="p">)</span> <span class="n">p</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">++</span><span class="p">));</span>
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">fast_io</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">io</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -491,6 +550,7 @@
 <li class="toctree-l3"><a class="reference internal" href="index.html#nastepna-maska-bitowa">Następna maska bitowa</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#szybkie-io">Szybkie IO</a></li>
 </ul>
 </li>
 </ul>
