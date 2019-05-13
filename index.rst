@@ -122,8 +122,6 @@ Następna maska bitowa
 Szybkie IO
 ==========
 
-
 .. literalinclude:: src/fast_io.cpp
    :start-after: <fast-io>
    :end-before: </fast-io>
-
