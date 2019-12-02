@@ -86,15 +86,14 @@
 <h2>Przechodzenie grafu<a class="headerlink" href="#przechodzenie-grafu" title="Stały odnośnik do tego nagłówka">¶</a></h2>
 <div class="section" id="dfs-iteracyjnie">
 <h3>DFS, iteracyjnie<a class="headerlink" href="#dfs-iteracyjnie" title="Stały odnośnik do tego nagłówka">¶</a></h3>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span> <span class="n">q</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span> <span class="n">dfs</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
 <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">visited</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
-  <span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
-  <span class="n">q</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">dfs</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+  <span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+  <span class="n">dfs</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
   <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">j</span> <span class="p">:</span> <span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">continue</span><span class="p">;</span>
-    <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-    <span class="n">q</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="n">dfs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -105,8 +104,7 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">visited</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
 <span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">I</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">j</span> <span class="p">:</span> <span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">continue</span><span class="p">;</span>
-    <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="nb">true</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
     <span class="n">dfs</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">};</span>
@@ -116,19 +114,74 @@
 </div>
 <div class="section" id="bfs-iteracyjnie">
 <h3>BFS, iteracyjnie<a class="headerlink" href="#bfs-iteracyjnie" title="Stały odnośnik do tego nagłówka">¶</a></h3>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">deque</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span> <span class="n">q</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">deque</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span> <span class="n">bfs</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
 <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">visited</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
-  <span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
-  <span class="n">q</span><span class="p">.</span><span class="n">pop_front</span><span class="p">();</span>
+<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">bfs</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+  <span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="n">bfs</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+  <span class="n">bfs</span><span class="p">.</span><span class="n">pop_front</span><span class="p">();</span>
   <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">j</span> <span class="p">:</span> <span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">continue</span><span class="p">;</span>
-    <span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
-    <span class="n">q</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="n">bfs</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="operacje-na-grafach">
+<h2>Operacje na grafach<a class="headerlink" href="#operacje-na-grafach" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<div class="section" id="transpozycja-grafu">
+<h3>Transpozycja grafu<a class="headerlink" href="#transpozycja-grafu" title="Stały odnośnik do tego nagłówka">¶</a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;&gt;</span> <span class="n">transpose</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;&gt;</span> <span class="o">&amp;</span><span class="n">graph</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;&gt;</span> <span class="n">r</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="n">graph</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">j</span> <span class="p">:</span> <span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+      <span class="n">r</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="silnie-spojne-skladowe">
+<h2>Silnie spójne składowe<a class="headerlink" href="#silnie-spojne-skladowe" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;&gt;</span> <span class="n">join_scc</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;&gt;</span> <span class="o">&amp;</span><span class="n">graph</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span> <span class="n">order</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">visited</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">dfs1</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">I</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">j</span> <span class="p">:</span> <span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="n">dfs1</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
+    <span class="n">order</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+  <span class="p">};</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="n">graph</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">dfs1</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+  <span class="n">reverse</span><span class="p">(</span><span class="n">order</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">order</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+
+  <span class="n">fill</span><span class="p">(</span><span class="n">visited</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">visited</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="nb">false</span><span class="p">);</span>
+  <span class="k">auto</span> <span class="n">transposed</span> <span class="o">=</span> <span class="n">transpose</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span> <span class="n">owner</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="n">I</span> <span class="n">n_components</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">dfs2</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">I</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">j</span> <span class="p">:</span> <span class="n">transposed</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="n">dfs2</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
+    <span class="n">owner</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_components</span><span class="p">;</span>
+  <span class="p">};</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">i</span> <span class="p">:</span> <span class="n">order</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visited</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="n">dfs2</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="o">++</span><span class="n">n_components</span><span class="p">;</span>
+
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;&gt;</span> <span class="n">supergraph</span><span class="p">(</span><span class="n">n_components</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="n">graph</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="nl">j</span> <span class="p">:</span> <span class="n">graph</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">owner</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">owner</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="n">supergraph</span><span class="p">[</span><span class="n">owner</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">push_back</span><span class="p">(</span><span class="n">owner</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_components</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">sort</span><span class="p">(</span><span class="n">supergraph</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">begin</span><span class="p">(),</span> <span class="n">supergraph</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">end</span><span class="p">()),</span>
+     <span class="n">supergraph</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">erase</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">supergraph</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">begin</span><span class="p">(),</span> <span class="n">supergraph</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">end</span><span class="p">()),</span>
+                         <span class="n">supergraph</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">end</span><span class="p">()));</span>
+
+  <span class="k">return</span> <span class="n">supergraph</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="wyszukiwanie-binarne">
@@ -143,8 +196,7 @@
 <span class="c1">//   nie istnieje, można użyć Hi ↦ Hi - 1. (Odwrotny znak dla minimum.)</span>
 <span class="n">I</span> <span class="nf">f_search</span><span class="p">(</span><span class="n">I</span> <span class="n">lo</span><span class="p">,</span> <span class="n">I</span> <span class="n">hi</span><span class="p">,</span> <span class="n">function</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">while</span> <span class="p">(</span><span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">I</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">mid</span><span class="p">))</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">I</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="n">f</span><span class="p">(</span><span class="n">mid</span><span class="p">))</span>
       <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
     <span class="k">else</span>
       <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span>
@@ -155,8 +207,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="drzewa-przedzialowe">
-<h2>Drzewa Przedziałowe<a class="headerlink" href="#drzewa-przedzialowe" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<div class="section" id="przedzialowce">
+<h2>Przedziałowce<a class="headerlink" href="#przedzialowce" title="Stały odnośnik do tego nagłówka">¶</a></h2>
 <p>Drzewa używają functorów:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dla każdego functora F musi być spełnione F(x, F.neutral) = x.</span>
 <span class="k">struct</span> <span class="n">Add</span> <span class="p">{</span>
@@ -165,13 +217,17 @@
 <span class="p">};</span>
 
 <span class="k">struct</span> <span class="n">Max</span> <span class="p">{</span>
-  <span class="n">I</span> <span class="n">neutral</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="n">I</span> <span class="nf">operator</span><span class="p">()(</span><span class="n">I</span> <span class="n">a</span><span class="p">,</span> <span class="n">I</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="n">a</span> <span class="o">?</span> <span class="nl">b</span> <span class="p">:</span> <span class="n">a</span><span class="p">;</span> <span class="p">}</span>
+  <span class="n">I</span> <span class="n">neutral</span> <span class="o">=</span> <span class="o">-</span><span class="n">inf</span><span class="p">;</span>
+  <span class="n">I</span> <span class="nf">operator</span><span class="p">()(</span><span class="n">I</span> <span class="n">a</span><span class="p">,</span> <span class="n">I</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span> <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="n">Min</span> <span class="p">{</span>
+  <span class="n">I</span> <span class="n">neutral</span> <span class="o">=</span> <span class="n">inf</span><span class="p">;</span>
+  <span class="n">I</span> <span class="nf">operator</span><span class="p">()(</span><span class="n">I</span> <span class="n">a</span><span class="p">,</span> <span class="n">I</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span> <span class="p">}</span>
 <span class="p">};</span>
 
 <span class="c1">// Ma sens tylko jako Update.</span>
 <span class="k">struct</span> <span class="n">Set</span> <span class="p">{</span>
-  <span class="n">I</span> <span class="n">neutral</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>  <span class="c1">// Lub dowolna nieużywana w drzewie wartość.</span>
+  <span class="n">I</span> <span class="n">neutral</span> <span class="o">=</span> <span class="o">-</span><span class="n">inf</span><span class="p">;</span>  <span class="c1">// Lub dowolna nieużywana w drzewie wartość.</span>
   <span class="n">I</span> <span class="nf">operator</span><span class="p">()(</span><span class="n">I</span> <span class="n">a</span><span class="p">,</span> <span class="n">I</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">b</span> <span class="o">!=</span> <span class="n">neutral</span> <span class="o">?</span> <span class="nl">b</span> <span class="p">:</span> <span class="n">a</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">};</span>
 </pre></div>
@@ -227,7 +283,13 @@
 </div>
 <div class="section" id="przedzial-przedzial">
 <h3>Przedział-Przedział<a class="headerlink" href="#przedzial-przedzial" title="Stały odnośnik do tego nagłówka">¶</a></h3>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// ↙↘ Update</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Zawsze najpierw są określenia dotyczące ustawiania, potem zapytań. Czyli</span>
+<span class="c1">// drzewo punkt-przedział to drzewo ustawiające coś w punkcie, czytające na</span>
+<span class="c1">// przedziale. Drzewo +, max dodaje na przedziale, zwraca maksimum na</span>
+<span class="c1">// przedziale. Taka jest więc kolejność functorów w szablonie i będę tego bronił</span>
+<span class="c1">// jak wyższości Minecrafta nad Factorio.</span>
+<span class="c1">//</span>
+<span class="c1">// ↙↘ Update</span>
 <span class="c1">// ↗↖ Combine</span>
 <span class="c1">// change(i, j, x) – każdy element k na [i, j] zmienia na Update(k, x).</span>
 <span class="c1">// get(i, j)       → wszystkie elementy na [i, j] połączone przez Combine.</span>
@@ -237,8 +299,8 @@
   <span class="n">Combine</span> <span class="n">combine</span><span class="p">;</span>
   <span class="n">I</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">;</span>
   <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
-  <span class="n">segment_tree</span><span class="p">(</span><span class="n">I</span> <span class="n">n</span><span class="p">)</span> <span class="o">:</span> <span class="n">n</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">w</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">__lg</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
-    <span class="n">v</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">combine</span><span class="p">.</span><span class="n">neutral</span><span class="p">),</span> <span class="n">d</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+  <span class="n">segment_tree</span><span class="p">(</span><span class="n">I</span> <span class="n">n</span><span class="p">,</span> <span class="n">T</span> <span class="n">x</span> <span class="o">=</span> <span class="n">T</span><span class="p">())</span> <span class="o">:</span> <span class="n">n</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">w</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">__lg</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">v</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">d</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">update</span><span class="p">.</span><span class="n">neutral</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="n">segment_tree</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">initial</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">segment_tree</span><span class="p">(</span><span class="n">initial</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
@@ -253,8 +315,9 @@
     <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span><span class="p">.</span><span class="n">neutral</span><span class="p">;</span>
   <span class="p">}</span>
   <span class="kt">void</span> <span class="n">change</span><span class="p">(</span><span class="n">I</span> <span class="n">qb</span><span class="p">,</span> <span class="n">I</span> <span class="n">qe</span><span class="p">,</span> <span class="n">I</span> <span class="n">rb</span><span class="p">,</span> <span class="n">I</span> <span class="n">re</span><span class="p">,</span> <span class="n">I</span> <span class="n">i</span><span class="p">,</span> <span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&gt;</span> <span class="n">re</span> <span class="o">||</span> <span class="n">qe</span> <span class="o">&lt;</span> <span class="n">rb</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&lt;=</span> <span class="n">rb</span> <span class="o">&amp;&amp;</span> <span class="n">re</span> <span class="o">&lt;=</span> <span class="n">qe</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&gt;</span> <span class="n">re</span> <span class="o">||</span> <span class="n">qe</span> <span class="o">&lt;</span> <span class="n">rb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&lt;=</span> <span class="n">rb</span> <span class="o">&amp;&amp;</span> <span class="n">re</span> <span class="o">&lt;=</span> <span class="n">qe</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">);</span>
       <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">);</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -265,8 +328,9 @@
     <span class="p">}</span>
   <span class="p">}</span>
   <span class="n">T</span> <span class="n">get</span><span class="p">(</span><span class="n">I</span> <span class="n">qb</span><span class="p">,</span> <span class="n">I</span> <span class="n">qe</span><span class="p">,</span> <span class="n">I</span> <span class="n">rb</span><span class="p">,</span> <span class="n">I</span> <span class="n">re</span><span class="p">,</span> <span class="n">I</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&gt;</span> <span class="n">re</span> <span class="o">||</span> <span class="n">qe</span> <span class="o">&lt;</span> <span class="n">rb</span><span class="p">)</span> <span class="k">return</span> <span class="n">combine</span><span class="p">.</span><span class="n">neutral</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&lt;=</span> <span class="n">rb</span> <span class="o">&amp;&amp;</span> <span class="n">re</span> <span class="o">&lt;=</span> <span class="n">qe</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&gt;</span> <span class="n">re</span> <span class="o">||</span> <span class="n">qe</span> <span class="o">&lt;</span> <span class="n">rb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">combine</span><span class="p">.</span><span class="n">neutral</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">qb</span> <span class="o">&lt;=</span> <span class="n">rb</span> <span class="o">&amp;&amp;</span> <span class="n">re</span> <span class="o">&lt;=</span> <span class="n">qe</span><span class="p">)</span> <span class="p">{</span>
       <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
@@ -292,8 +356,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="drzewo-potegowe">
-<h2>Drzewo Potęgowe<a class="headerlink" href="#drzewo-potegowe" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<div class="section" id="potegowiec">
+<h2>Potęgowiec<a class="headerlink" href="#potegowiec" title="Stały odnośnik do tego nagłówka">¶</a></h2>
 <p>Także Fenwick Tree lub Binary Indexed Tree (BIT).</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// prefix(i), i &lt; n     → suma na [0, i], dla i &lt; 0 → 0.</span>
 <span class="c1">// get(i),    i &lt; n     → element w i,    dla i &lt; 0 → 0.</span>
@@ -317,6 +381,55 @@
 <span class="p">};</span>
 </pre></div>
 </div>
+<p>Potęgowiec planarny</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// insert(x, y) – wstawia punkt (x ∈ [0, n], y ∈ Z)</span>
+<span class="c1">// prefix(x, y) → ile jest w drzewie punktów (u, v), że u ≤ x ⋀ v ≤ y</span>
+<span class="c1">// get(x_1, y_1, x_2, y_2)</span>
+<span class="c1">//   → ile jest w drzewie punktów (u, v), że x_1 ≤ u ≤ x_2 ⋀ y_1 ≤ v ≤ y_2</span>
+<span class="n">I</span> <span class="nf">lsb</span><span class="p">(</span><span class="n">I</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">x</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">x</span><span class="p">;</span> <span class="p">}</span>
+<span class="cp">#include</span> <span class="cpf">&lt;ext/pb_ds/assoc_container.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ext/pb_ds/tree_policy.hpp&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">__gnu_pbds</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">tree</span><span class="o">&lt;</span><span class="n">II</span><span class="p">,</span> <span class="n">null_type</span><span class="p">,</span> <span class="n">less</span><span class="o">&lt;</span><span class="n">II</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">rb_tree_tag</span><span class="p">,</span>
+             <span class="n">tree_order_statistics_node_update</span><span class="o">&gt;</span>
+    <span class="n">smartset</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">fenwick_set_tree_2d</span> <span class="p">{</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">smartset</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+  <span class="n">I</span> <span class="n">n</span><span class="p">;</span>
+  <span class="n">fenwick_set_tree_2d</span><span class="p">(</span><span class="n">I</span> <span class="n">n</span><span class="p">)</span> <span class="o">:</span> <span class="n">n</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="n">v</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="p">}</span>
+  <span class="kt">void</span> <span class="n">insert</span><span class="p">(</span><span class="n">I</span> <span class="n">x</span><span class="p">,</span> <span class="n">I</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="o">++</span><span class="n">x</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="n">lsb</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">insert</span><span class="p">({</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">});</span>
+  <span class="p">}</span>
+  <span class="n">I</span> <span class="n">prefix</span><span class="p">(</span><span class="n">I</span> <span class="n">x</span><span class="p">,</span> <span class="n">I</span> <span class="n">y</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="n">I</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">i</span> <span class="o">=</span> <span class="o">++</span><span class="n">x</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">-=</span> <span class="n">lsb</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="n">c</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">order_of_key</span><span class="p">({</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">});</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">I</span> <span class="n">get</span><span class="p">(</span><span class="n">I</span> <span class="n">x_1</span><span class="p">,</span> <span class="n">I</span> <span class="n">y_1</span><span class="p">,</span> <span class="n">I</span> <span class="n">x_2</span><span class="p">,</span> <span class="n">I</span> <span class="n">y_2</span><span class="p">)</span> <span class="k">const</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">get</span><span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span><span class="p">)</span> <span class="o">-</span>  <span class="c1">//</span>
+           <span class="p">(</span><span class="n">x_1</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">get</span><span class="p">(</span><span class="n">x_1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_2</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span>
+           <span class="p">(</span><span class="n">y_1</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">get</span><span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
+           <span class="p">(</span><span class="n">x_1</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">y_1</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">get</span><span class="p">(</span><span class="n">x_1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">ostream</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">o</span><span class="p">,</span> <span class="k">const</span> <span class="n">fenwick_set_tree_2d</span> <span class="o">&amp;</span><span class="n">tree</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">I</span> <span class="n">max_x</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">n</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">tree</span><span class="p">.</span><span class="n">n</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">s</span> <span class="p">:</span> <span class="n">tree</span><span class="p">.</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">II</span> <span class="nl">i</span> <span class="p">:</span> <span class="n">s</span><span class="p">)</span> <span class="n">max_x</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">first</span><span class="p">),</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">max_y</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="n">max_y</span><span class="p">;</span> <span class="o">++</span><span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">I</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">max_x</span><span class="p">;</span> <span class="o">++</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">o</span> <span class="o">&lt;&lt;</span> <span class="n">setw</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">tree</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;&lt;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">o</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="prefikso-sufiksy">
+<h2>Prefikso-sufiksy<a class="headerlink" href="#prefikso-sufiksy" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<p>Algorytm Morrisa-Pratta (MP).</p>
 </div>
 <div class="section" id="manacher">
 <h2>Manacher<a class="headerlink" href="#manacher" title="Stały odnośnik do tego nagłówka">¶</a></h2>
@@ -533,16 +646,22 @@
 <li class="toctree-l3"><a class="reference internal" href="index.html#bfs-iteracyjnie">BFS, iteracyjnie</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#operacje-na-grafach">Operacje na grafach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#transpozycja-grafu">Transpozycja grafu</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#silnie-spojne-skladowe">Silnie spójne składowe</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#wyszukiwanie-binarne">Wyszukiwanie Binarne</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="index.html#funkcja-f-search">Funkcja f-search</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#drzewa-przedzialowe">Drzewa Przedziałowe</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#przedzialowce">Przedziałowce</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="index.html#punkt-przedzial">Punkt-Przedział</a></li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#przedzial-przedzial">Przedział-Przedział</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#drzewo-potegowe">Drzewo Potęgowe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#potegowiec">Potęgowiec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#prefikso-sufiksy">Prefikso-sufiksy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#manacher">Manacher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#hasze">Hasze</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#operacje-bitowe">Operacje bitowe</a><ul>
